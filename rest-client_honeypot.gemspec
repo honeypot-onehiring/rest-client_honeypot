@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 Gem::Specification.new do |spec|
-  spec.name          = 'restclient_honeypot'
-  spec.version       = '0.0.1'
+  spec.name          = 'rest-client_honeypot'
+  spec.version       = '0.0.3'
   spec.authors       = ['Andrzej Trzaska']
   spec.email         = ['atrzaska2@gmail.com']
 
