@@ -49,7 +49,7 @@ module RestClient
   class Request
     def self.execute(args, &block)
       args[:start_time] = Time.zone.now
-      args[:headers]['x-request-id'] = SecureRandom.uuid
+      args[:headers]['x-request-id'] ||= SecureRandom.uuid
 
       response = new(args).execute(&block)
       log_request(args, response)
@@ -61,7 +61,7 @@ module RestClient
     end
 
     def self.log_request(args, response)
-      start_time = args[:start_time]
+      start_time = args.delete(:start_time)
       request_id = args[:headers]['x-request-id']
       method = args[:method].to_s.upcase
       url = args[:url]
