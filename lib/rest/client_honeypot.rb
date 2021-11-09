@@ -8,17 +8,17 @@ require 'restclient'
 module RestClient
   def self.post(url, payload, headers = {}, &block)
     payload, headers = with_json(payload, headers)
-    super(url, payload, headers, &block)
+    RestClient::Request.execute(method: :post, url: url, payload: payload, headers: headers, &block)
   end
 
   def self.patch(url, payload, headers = {}, &block)
     payload, headers = with_json(payload, headers)
-    super(url, payload, headers, &block)
+    RestClient::Request.execute(method: :post, url: url, payload: payload, headers: headers, &block)
   end
 
   def self.put(url, payload, headers = {}, &block)
     payload, headers = with_json(payload, headers)
-    super(url, payload, headers, &block)
+    RestClient::Request.execute(method: :post, url: url, payload: payload, headers: headers, &block)
   end
 
   def self.with_json(payload, headers)
@@ -48,17 +48,24 @@ end
 module RestClient
   class Request
     def self.execute(args, &block)
-      start_time = Time.zone.now
-      request_id = SecureRandom.uuid
-
-      args[:headers]['x-request_id'] = request_id
+      args[:start_time] = Time.zone.now
+      args[:headers]['x-request-id'] = SecureRandom.uuid
 
       response = new(args).execute(&block)
+      log_request(args, response)
+      response
+    rescue RestClient::Exception => e
+      log_request(args, e.response)
 
+      raise
+    end
+
+    def self.log_request(args, response)
+      start_time = args[:start_time]
+      request_id = args[:headers]['x-request-id']
       method = args[:method].to_s.upcase
       url = args[:url]
       body = args[:payload]&.squish
-      headers = args[:headers]
 
       code = response.code
       response_body = response.body&.squish
@@ -70,8 +77,6 @@ module RestClient
 
       Rails.logger.info(message)
       Rails.logger.info("RestClient: Response payload \"#{response_body}\"")
-
-      response
     end
   end
 end

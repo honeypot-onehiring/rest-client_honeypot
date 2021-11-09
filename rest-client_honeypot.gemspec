@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Honeypot extensions for restclient gem'
   spec.description   = 'Honeypot extensions for restclient gem.'
   spec.homepage      = 'https://github.com/honeypotio/restclient_honeypot'
-  spec.required_ruby_version = '>= 3.0.0'
+  spec.required_ruby_version = '>= 2.5.0'
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/honeypotio/restclient_honeypot'
