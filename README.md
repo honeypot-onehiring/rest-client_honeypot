@@ -8,6 +8,7 @@ This gem is an extension to `rest-client` gem. It adds following functionality:
 - provide headers in payload hash
 - parsed_body helper method
 - log requests in rails console
+- automatically add `x-request-id` header to each request
 
 ## Example usage
 
