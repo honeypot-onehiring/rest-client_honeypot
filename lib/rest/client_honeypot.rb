@@ -72,7 +72,7 @@ module RestClient
       body = args[:payload].is_a?(String) ? args[:payload].squish : args[:payload]
 
       code = response&.code
-      response_body = response.body&.squish
+      response_body = response&.body&.squish
       duration = start_time ? ((Time.zone.now - start_time) * 1000).round(0) : nil
       message = "RestClient: Request with ID: #{request_id} #{method} #{url}"
       message += " with body: \"#{body}\"" if body
