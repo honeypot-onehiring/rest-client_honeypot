@@ -48,7 +48,11 @@ end
 module RestClient
   class Request
     def self.execute(args, &block)
+      # unfreeze frozen headers
+      args[:headers] = args[:headers].dup if args[:headers].frozen?
+
       args[:start_time] = Time.zone.now
+      args[:headers] = args
       args[:headers]['x-request-id'] ||= SecureRandom.uuid
 
       response = new(args).execute(&block)
