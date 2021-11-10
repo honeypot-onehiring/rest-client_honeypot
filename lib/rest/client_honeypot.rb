@@ -69,7 +69,7 @@ module RestClient
       request_id = args[:headers]['x-request-id']
       method = args[:method].to_s.upcase
       url = args[:url]
-      body = args[:payload]&.squish
+      body = args[:payload].is_a?(String) ? args[:payload].squish : args[:payload]
 
       code = response.code
       response_body = response.body&.squish
