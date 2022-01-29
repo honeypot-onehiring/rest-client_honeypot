@@ -18,3 +18,7 @@ This gem is an extension to `rest-client` gem. It adds following functionality:
     RestClient.post('https://foo.com/users', json: { age: 5 }, headers: { authorization: 'Bearer xyz' })
     RestClient.get('https://foo.com/users').parsed_body
     RestClient.get('https://foo.com/users').parsed_body(symbolize_names: true)
+
+## License
+
+MIT
