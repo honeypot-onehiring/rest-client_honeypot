@@ -47,6 +47,14 @@ end
 
 module RestClient
   class Request
+    @@sensitive_data = []
+
+    def self.mask_sensitive_data(value)
+      Array(value).each do |val|
+        @@sensitive_data << val
+      end
+    end
+
     def self.execute(args, &block)
       # unfreeze frozen headers
       args[:headers] = args[:headers].dup if args[:headers].frozen?
@@ -77,6 +85,11 @@ module RestClient
       message += " with body: \"#{body}\"" if body
       message += " returned #{code}" if code
       message += " and took #{duration}ms" if duration
+
+      @@sensitive_data.each do |sensitive_data|
+        message.gsub!(sensitive_data, '<filtered>')
+        response_body.gsub!(sensitive_data, '<filtered>')
+      end
 
       Rails.logger.info(message)
       Rails.logger.info("RestClient: Response payload \"#{response_body}\"")
