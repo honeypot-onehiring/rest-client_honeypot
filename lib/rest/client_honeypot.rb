@@ -6,6 +6,13 @@ require 'restclient'
 
 # rubocop:disable Style/Documentation
 module RestClient
+  def self.get(url, headers = {}, &block)
+    headers_kwarg = headers.delete(:headers)
+    headers.merge!(headers_kwarg) if headers_kwarg
+
+    RestClient::Request.execute(method: :get, url: url, headers: headers, &block)
+  end
+
   def self.post(url, payload, headers = {}, &block)
     payload, headers = with_json(payload, headers)
     RestClient::Request.execute(method: :post, url: url, payload: payload, headers: headers, &block)
